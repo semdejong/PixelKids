@@ -29,7 +29,7 @@ db.once("open", () => console.log("Connection established"));
 
 const whitelistNA = process.env.ORIGIN;
 const whitelist = whitelistNA?.split(",") || [];
-whitelist.push("http://localhost:3000");
+whitelist.push("http://localhost:3001/");
 
 app.use(
   cors({
