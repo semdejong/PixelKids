@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import useLoading from "../../../../hooks/useLoading";
 import {
   login as loginEndpoint,
@@ -7,6 +9,7 @@ import {
 
 export default function useAuthHook() {
   const { startLoading, stopLoading } = useLoading();
+  const navigate = useNavigate();
 
   const register = async (fullname, email, password) => {
     startLoading();
@@ -18,17 +21,15 @@ export default function useAuthHook() {
     startLoading();
     await loginEndpoint(email, password);
     stopLoading();
+    navigate("/factory");
   };
 
-  const logout = () => {
+  const logout = async () => {
     startLoading();
-    logoutEndpoint()
-      .then(() => {
-        stopLoading();
-      })
-      .catch(() => {
-        stopLoading();
-      });
+    await logoutEndpoint();
+    stopLoading();
+
+    navigate("/auth/login");
   };
 
   return {

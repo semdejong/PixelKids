@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Input } from "antd";
+import { Link } from "react-router-dom";
 
 import useAuthHook from "./hooks/useAuthHook";
 
@@ -29,6 +30,9 @@ export default function LoginPage() {
       >
         Login
       </Button>
+      <br />
+      <br />
+      <Link to="/auth/register">Instead create an account</Link>
     </div>
   );
 }
