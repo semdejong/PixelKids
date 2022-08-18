@@ -4,17 +4,15 @@ const router = express.Router();
 
 const { authenticate } = require("./middleware/authenticate");
 const { authorize } = require("./middleware/authorize");
-const { User } = require("../models/user");
 const { paginatedResults } = require("./middleware/paginate");
+const { User } = require("../models/user");
 
 router.get(
   "/",
   authenticate,
-  paginatedResults(User),
+  paginatedResults(User, "roles"),
   authorize("admin"),
   async (req, res) => {
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    // await delay(2000);
     const users = res.paginatedResults.results;
     if (!req.authorized) {
       const usersToReturn = users.map((user) => {
@@ -48,7 +46,7 @@ router.get("/:id", authenticate, authorize("admin"), async (req, res) => {
         username: req.user.username,
         fullname: req.user.fullname,
         email: req.user.email,
-        role: req.user.role,
+        roles: req.user.roles,
       });
     }
 
@@ -67,7 +65,7 @@ router.get("/:id", authenticate, authorize("admin"), async (req, res) => {
       username: user.username,
       fullname: user.fullname,
       email: user.email,
-      role: user.role,
+      roles: user.roles,
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -82,6 +80,17 @@ router.patch("/:id", authenticate, authorize("admin"), async (req, res) => {
       if (req.body.username) user.username = req.body.username;
       if (req.body.fullname) user.fullname = req.body.fullname;
       if (req.body.email) user.email = req.body.email;
+      if (req.body.roles) {
+        if (req.body.roles.length > 0) {
+          if (req.body.roles.includes("admin")) {
+            user.isAdmin = true;
+            user.roles = req.body.roles.filter((role) => role !== "admin");
+          } else {
+            user.isAdmin = false;
+            user.roles = req.body.roles;
+          }
+        }
+      }
       await user.save();
       user.password = "";
       return res.status(200).json(user);

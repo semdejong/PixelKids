@@ -22,20 +22,11 @@ const userSchema = mongoose.Schema({
     max: 1000,
     required: true,
   },
-
-  role: {
-    type: String,
-    min: 5,
-    max: 100,
-    default: "user",
-    required: true,
+  isAdmin: {
+    type: Boolean,
+    default: false,
   },
-
-  tenants: {
-    type: [String],
-    default: [],
-  },
-
+  roles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Role" }],
   phoneNumber: {
     type: String,
     min: 4,
