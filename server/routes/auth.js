@@ -91,7 +91,7 @@ router.post("/login", async (req, res) => {
         expiryDate: expireDate,
         username: user.username,
         fullname: user.fullname,
-        role: user.role,
+        roles: user.roles,
       })
       .send();
   } catch (err) {

@@ -8,8 +8,6 @@ export default function NoSessionRoute({
   const auth = document.cookie.includes("isAuth");
   const location = useLocation();
 
-  console.log(auth);
-
   return !auth ? (
     <Component {...restOfProps} />
   ) : (

@@ -1,5 +1,7 @@
 //3rd library imports
 import { Routes, Route } from "react-router-dom";
+import {QueryClient, QueryClientProvider} from "react-query";
+
 
 //Pages, hooks and API
 import AuthRouter from "./Pages/Auth";
@@ -15,11 +17,12 @@ import NavBar from "./Components/NavBar";
 //Stylesheets
 
 function App() {
+  const queryClient = new QueryClient();
   const { leftNavBar, rightNavBar } = useNavBar();
 
   return (
-    <>
-      <div className="h-screen overflow-hidden">
+    <QueryClientProvider client={queryClient}>
+      <div className="h-screen w-full overflow-hidden">
         <Loader />
         <NavBar leftNavbarItems={leftNavBar} rightNavBarItems={rightNavBar} />
         <Routes>
@@ -33,7 +36,7 @@ function App() {
           ></Route>
         </Routes>
       </div>
-    </>
+    </QueryClientProvider>
   );
 }
 

@@ -1,4 +1,4 @@
-function paginatedResults(model) {
+function paginatedResults(model, populate) {
   return async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
@@ -8,9 +8,13 @@ function paginatedResults(model) {
 
     const results = {};
 
-    const query = req.query;
+    const query = req.query.query;
 
-    const amountOfResults = await model.countDocuments(query || {}).exec();
+    const amountOfResults = await model
+      .countDocuments(
+        query ? { ...query, isArchived: false } : { isArchived: false }
+      )
+      .exec();
 
     results.amount = amountOfResults;
 
@@ -29,19 +33,34 @@ function paginatedResults(model) {
     }
 
     try {
-      if (query) {
+      if (query && populate) {
         results.results = await model
-          .find(query)
+          .find({ ...query, isArchived: false })
+          .limit(limit)
+          .skip(startIndex)
+          .populate(populate)
+          .exec();
+      } else if (populate) {
+        results.results = await model
+          .find({ isArchived: false })
+          .limit(limit)
+          .skip(startIndex)
+          .populate(populate)
+          .exec();
+      } else if (query) {
+        results.results = await model
+          .find({ ...query, isArchived: false })
           .limit(limit)
           .skip(startIndex)
           .exec();
       } else {
         results.results = await model
-          .find()
+          .find({ isArchived: false })
           .limit(limit)
           .skip(startIndex)
           .exec();
       }
+
       res.paginatedResults = results;
       next();
     } catch (err) {

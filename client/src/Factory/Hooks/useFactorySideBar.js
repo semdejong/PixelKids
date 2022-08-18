@@ -36,6 +36,14 @@ export default function useFactorySideBar() {
       icon: "fa-users",
       show: document.cookie.includes("isAuth"),
     },
+    {
+      label: "Roles",
+      onClick: () => {
+        navigate("/factory/roles");
+      },
+      icon: "fa-scroll",
+      show: document.cookie.includes("isAuth"),
+    },
   ];
 
   const bottomSideBar = [
