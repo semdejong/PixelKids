@@ -9,7 +9,7 @@ export default function FactoryRouter() {
   const { topSideBar, bottomSideBar } = useFactorySideBar();
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full overflow-auto">
       {/* //render sidebar */}
       <SideBar
         topSideBarItems={topSideBar}
