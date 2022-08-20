@@ -9,13 +9,13 @@ export default function FactoryRouter() {
   const { topSideBar, bottomSideBar } = useFactorySideBar();
 
   return (
-    <div className="flex h-full w-full overflow-auto">
+    <div className="flex h-full w-full">
       {/* //render sidebar */}
       <SideBar
         topSideBarItems={topSideBar}
         bottomSideBarItems={bottomSideBar}
       />
-      <div className="p-4 w-full">
+      <div className="p-4 w-full overflow-auto">
         <Routes>
           <Route path="objects" element={<ObjectPage />} />
           <Route path="objectType" element={<ObjectTypePage />} />

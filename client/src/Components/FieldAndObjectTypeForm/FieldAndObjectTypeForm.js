@@ -1,37 +1,104 @@
-import React, { useEffect } from "react";
-import { Input, Select } from "antd";
+import React, { useState } from "react";
+import { Checkbox, Input, Select } from "antd";
 
 import useRoles from "../../hooks/useRoles";
+import useObjectTypes from "../../hooks/useObjectTypes";
 
-export default function FieldAndObjectTypeForm({ field }) {
-  const { roles, changePagination } = useRoles();
+export default function FieldAndObjectTypeForm({
+  name,
+  description,
+  permissions,
+  type,
+  reference,
+  multipleReference,
+  setMultipleReference,
+  setReference,
+  setType,
+  setName,
+  setDescription,
+  updatePermission,
+  field,
+}) {
+  const { roles } = useRoles();
+  const { objectTypes } = useObjectTypes();
 
   //   useEffect(() => {
-  //     changePagination({ limit: 100, page: 1 });
+  //     changePagination({ limit: 100, page: 1 }); (from roles)
   //   });
 
-  if (!roles?.data) {
+  if (!roles?.data || (field && !objectTypes?.data)) {
     return <></>;
   }
 
   const options = roles.data.roles.map((role) => (
-    <Select.Option value={role.value}>{role.name}</Select.Option>
+    <Select.Option value={role._id}>{role.name}</Select.Option>
   ));
 
   return (
     <div className="w-full h-fullflex flex-col space-y-4">
       <div className="w-64">
-        <span>Name of object type</span>
-        <Input placeholder="name" />
+        <span>Name (must be unique)</span>
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="name"
+        />
       </div>
       <div className="h-24">
         <span>Description</span>
-        <Input.TextArea placeholder="description" />
+        <Input.TextArea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="description"
+        />
       </div>
-      <div className="w-64">
-        <span>type</span>
-        <Input placeholder="name" />
-      </div>
+      {field && (
+        <div
+          className={`flex flex-row w-full items-center ${
+            type === "reference" && "justify-center"
+          }`}
+        >
+          <div className="w-64 flex flex-col ">
+            <span>Type</span>
+            <Select
+              placeholder="type"
+              value={type}
+              className="w-44"
+              onChange={setType}
+            >
+              <Select.Option value="reference">Reference</Select.Option>
+              <Select.Option value="string">String</Select.Option>
+            </Select>
+          </div>
+          {type === "reference" && (
+            <div className="w-64 flex flex-col ">
+              <span>Reference</span>
+              <Select
+                placeholder="reference"
+                value={reference}
+                onChange={setReference}
+                className="w-44"
+              >
+                {objectTypes.data.objectTypes.map((objectType) => (
+                  <Select.Option value={objectType._id}>
+                    {objectType.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+          )}
+        </div>
+      )}
+
+      {field && type === "reference" && (
+        <div className="flex flex-col">
+          <span>Multiple reference</span>
+          <Checkbox
+            checked={multipleReference}
+            onChange={(e) => setMultipleReference(e.target.checked)}
+          />
+        </div>
+      )}
 
       <div className="w-full flex flex-col space-y-4">
         <span>Permissions</span>
@@ -47,6 +114,8 @@ export default function FieldAndObjectTypeForm({ field }) {
               mode="multiple"
               showArrow
               className="w-64"
+              value={permissions.read}
+              onChange={(newValue) => updatePermission("read", newValue)}
             >
               {options}
             </Select>
@@ -58,6 +127,8 @@ export default function FieldAndObjectTypeForm({ field }) {
               mode="multiple"
               showArrow
               className="w-64"
+              value={permissions.write}
+              onChange={(newValue) => updatePermission("write", newValue)}
             >
               {options}
             </Select>
@@ -69,6 +140,8 @@ export default function FieldAndObjectTypeForm({ field }) {
               mode="multiple"
               showArrow
               className="w-64"
+              value={permissions.update}
+              onChange={(newValue) => updatePermission("update", newValue)}
             >
               {options}
             </Select>
@@ -80,6 +153,8 @@ export default function FieldAndObjectTypeForm({ field }) {
               mode="multiple"
               showArrow
               className="w-64"
+              value={permissions.delete}
+              onChange={(newValue) => updatePermission("delete", newValue)}
             >
               {options}
             </Select>

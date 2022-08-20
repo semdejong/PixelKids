@@ -21,7 +21,7 @@ export default function SideBar({ topSideBarItems, bottomSideBarItems }) {
             ))}
         </div>
         {/* bottom sidebar */}
-        <div className="flex flex-col justify-end items-center h-full w-full overflow-hidden space-y-8">
+        <div className="flex flex-col justify-end items-center h-full w-full overflow-hidden space-y-8 pb-4">
           {bottomSideBarItems
             .filter((item) => item.show)
             .map((item, index) => (

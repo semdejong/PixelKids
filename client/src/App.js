@@ -21,7 +21,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="h-screen w-full flex flex-col">
+      <div className="h-screen w-full flex flex-col overflow-hidden">
         <Loader />
         <NavBar leftNavbarItems={leftNavBar} rightNavBarItems={rightNavBar} />
         <Routes>
