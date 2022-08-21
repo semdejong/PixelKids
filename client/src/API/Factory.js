@@ -70,3 +70,11 @@ export const addObjectType = async (name, description, fields, permissions) => {
 
   return response;
 };
+
+export const deleteObjectType = async (id) => {
+  const response = await axios.delete(`/api/objectType/${id}`).catch((err) => {
+    return err.response;
+  });
+
+  return response;
+};

@@ -10,11 +10,13 @@ export default function FieldAndObjectTypeForm({
   permissions,
   type,
   reference,
+  required,
   multipleReference,
   setMultipleReference,
   setReference,
   setType,
   setName,
+  setRequired,
   setDescription,
   updatePermission,
   field,
@@ -96,6 +98,16 @@ export default function FieldAndObjectTypeForm({
           <Checkbox
             checked={multipleReference}
             onChange={(e) => setMultipleReference(e.target.checked)}
+          />
+        </div>
+      )}
+
+      {field && (
+        <div className="flex flex-col">
+          <span>Required</span>
+          <Checkbox
+            checked={required}
+            onChange={(e) => setRequired(e.target.checked)}
           />
         </div>
       )}

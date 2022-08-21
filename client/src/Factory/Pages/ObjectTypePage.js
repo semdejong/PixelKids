@@ -11,13 +11,15 @@ import FieldsSelector from "../../Components/FieldsSelector";
 export default function ObjectTypePage() {
   const [isAddingNewObjectType, setIsAddingNewObjectType] = useState(false);
 
-  const { objectTypes, loading, addObjectType } = useObjectTypes();
+  const { objectTypes, loading, addObjectType, deleteObjectType } =
+    useObjectTypes();
 
   return !isAddingNewObjectType ? (
     <ObjectList
       setIsAddingNewObjectType={setIsAddingNewObjectType}
       objectTypes={objectTypes}
       loading={loading}
+      deleteObjectType={deleteObjectType}
     />
   ) : (
     <AddObjectType
@@ -27,10 +29,13 @@ export default function ObjectTypePage() {
   );
 }
 
-const ObjectList = ({ setIsAddingNewObjectType, objectTypes, loading }) => {
+const ObjectList = ({
+  setIsAddingNewObjectType,
+  objectTypes,
+  loading,
+  deleteObjectType,
+}) => {
   const { startLoading, stopLoading } = useLoading();
-
-  const { Paragraph } = Typography;
 
   if (loading || !objectTypes) {
     startLoading();
@@ -112,7 +117,12 @@ const ObjectList = ({ setIsAddingNewObjectType, objectTypes, loading }) => {
       align: "center",
       render: (_, record) => {
         return (
-          <Popconfirm title="Sure to delete?" onConfirm={() => {}}>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => {
+              deleteObjectType(record._id);
+            }}
+          >
             <span className="text-red-500 cursor-pointer text-xl">
               <Icon icon="fa-trash" />
             </span>
@@ -121,18 +131,6 @@ const ObjectList = ({ setIsAddingNewObjectType, objectTypes, loading }) => {
       },
     },
   ];
-
-  console.log(
-    objectTypes.data.objectTypes.map((objectType) => {
-      return {
-        ...objectType,
-        read: [...objectType.permissions.read],
-        write: [...objectType.permissions.write],
-        update: [...objectType.permissions.update],
-        delete: [...objectType.permissions.delete],
-      };
-    })
-  );
 
   return (
     <div className="flex flex-col relative w-full h-full">
@@ -149,6 +147,7 @@ const ObjectList = ({ setIsAddingNewObjectType, objectTypes, loading }) => {
       <Table
         className="w-full"
         columns={columns}
+        rowKey={(record) => record._id}
         dataSource={objectTypes.data.objectTypes.map((objectType) => {
           return {
             ...objectType,
@@ -178,10 +177,19 @@ const AddObjectType = ({ setIsAddingNewObjectType, addObjectType }) => {
     setPermissions({ ...permissions, [permission]: roles });
   };
 
-  const createObjectType = () => {
-    setIsAddingNewObjectType(false);
-    addObjectType(name, description, fields, permissions);
+  const createObjectType = async () => {
+    const response = await addObjectType(
+      name,
+      description,
+      fields,
+      permissions
+    );
+
+    if (response.status === 200) {
+      setIsAddingNewObjectType(false);
+    }
   };
+
   return (
     <div className="w-full h-full flex flex-col space-y-8">
       <div>
@@ -215,27 +223,3 @@ const AddObjectType = ({ setIsAddingNewObjectType, addObjectType }) => {
     </div>
   );
 };
-
-// <Button
-//   type="primary"
-//   onClick={() =>
-//     addObjectType(
-//       "Sems object",
-//       "Sems first object type",
-//       fields,
-//       permissions
-//     )
-//   }
-// >
-//   add object
-// </Button>
-
-// <Button
-//   type="primary"
-//   onClick={() => {
-//     console.log("sd");
-//     getObjectTypes();
-//   }}
-// >
-//   get objects
-// </Button>

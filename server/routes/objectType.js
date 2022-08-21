@@ -100,6 +100,14 @@ router.get("/:id", (req, res) => {
 //create object type
 router.post("/", authenticate, authorize("admin", true), async (req, res) => {
   try {
+    if (
+      await ObjectType.findOne({ name: new RegExp(`^${req.body.name}$`, "i") })
+    ) {
+      return res.status(400).json({
+        message: "ObjectType name should be unique",
+      });
+    }
+
     const newObjectType = new ObjectType({
       name: req.body.name,
       description: req.body.description,
@@ -153,5 +161,23 @@ router.post("/", authenticate, authorize("admin", true), async (req, res) => {
     res.status(500).json({ message: "ObjectType not valid" });
   }
 });
+
+router.delete(
+  "/:id",
+  authenticate,
+  authorize("admin", true),
+  async (req, res) => {
+    try {
+      const objectType = await ObjectType.findById(req.params.id);
+      if (!objectType) {
+        return res.status(404).json({ message: "Object type not found" });
+      }
+      await ObjectType.findByIdAndDelete(req.params.id);
+      return res.status(200).json({ message: "Object type archived" });
+    } catch (e) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  }
+);
 
 module.exports = router;

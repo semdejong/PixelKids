@@ -15,6 +15,7 @@ export default function FieldEditorModal({
   const [type, setType] = useState("");
   const [reference, setReference] = useState("");
   const [multipleReference, setMultipleReference] = useState(false);
+  const [required, setRequired] = useState(false);
   const [permissions, setPermissions] = useState({
     read: [],
     write: [],
@@ -29,26 +30,30 @@ export default function FieldEditorModal({
   useEffect(() => {}, []);
 
   const handleOk = async () => {
-    addField({
+    const response = addField({
       name,
       description,
       type,
       reference,
       multipleReference,
+      required,
       permissions,
     });
 
-    setName("");
-    setDescription("");
-    setType("");
-    setReference("");
-    setMultipleReference(false);
-    setPermissions({
-      read: [],
-      write: [],
-      update: [],
-      delete: [],
-    });
+    if (response) {
+      setName("");
+      setDescription("");
+      setType("");
+      setReference("");
+      setMultipleReference(false);
+      setRequired(false);
+      setPermissions({
+        read: [],
+        write: [],
+        update: [],
+        delete: [],
+      });
+    }
   };
 
   const handleCancel = () => {
@@ -70,11 +75,13 @@ export default function FieldEditorModal({
         type={type}
         reference={reference}
         multipleReference={multipleReference}
+        required={required}
         permissions={permissions}
         setName={setName}
         setDescription={setDescription}
         setType={setType}
         setReference={setReference}
+        setRequired={setRequired}
         setMultipleReference={setMultipleReference}
         updatePermission={updatePermission}
       />
