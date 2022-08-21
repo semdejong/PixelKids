@@ -15,7 +15,7 @@ export default function FactoryRouter() {
         topSideBarItems={topSideBar}
         bottomSideBarItems={bottomSideBar}
       />
-      <div className="p-4 w-full">
+      <div className="p-4 w-full overflow-auto">
         <Routes>
           <Route path="objects" element={<ObjectPage />} />
           <Route path="objectType" element={<ObjectTypePage />} />

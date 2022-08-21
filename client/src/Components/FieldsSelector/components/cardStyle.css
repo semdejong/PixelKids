@@ -1,0 +1,7 @@
+.crud {
+  visibility: hidden;
+}
+
+.card-container:hover .crud {
+  visibility: visible;
+}

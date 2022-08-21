@@ -78,6 +78,9 @@ app.use("/api/objectType", objectTypeRoute);
 const objectRoute = require("./routes/object");
 app.use("/api/object", objectRoute);
 
+const fileRoute = require("./routes/file");
+app.use("/api/file", fileRoute);
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
