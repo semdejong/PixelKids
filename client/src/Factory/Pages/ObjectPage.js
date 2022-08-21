@@ -1,5 +1,12 @@
-import React from "react";
+import { useState } from "react";
+import { Image } from "../../Components/Fields/Components";
 
 export default function ObjectPage() {
-  return <div>ObjectPage</div>;
+  const [value, setValue] = useState([]);
+
+  return (
+    <>
+      <Image value={value} setValue={setValue} />
+    </>
+  );
 }

@@ -116,8 +116,18 @@ router.post("/", authenticate, authorize("admin", true), async (req, res) => {
           name: field.name,
           description: field.description,
           type: field.type,
-          reference: field.reference,
+          reference:
+            field.reference !== "Users" && field.reference !== "Roles"
+              ? field.reference
+              : null,
+          uperReference:
+            field.reference === "Users"
+              ? "Users"
+              : field.reference === "Roles"
+              ? "Roles"
+              : null,
           isRequired: field.isRequired,
+          multipleReference: field.multipleReference,
           metaData: {
             createdBy: req.user._id,
             lastModifiedBy: req.user._id,

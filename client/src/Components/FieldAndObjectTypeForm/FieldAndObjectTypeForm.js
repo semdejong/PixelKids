@@ -70,6 +70,14 @@ export default function FieldAndObjectTypeForm({
             >
               <Select.Option value="reference">Reference</Select.Option>
               <Select.Option value="string">String</Select.Option>
+              <Select.Option value="number">Number</Select.Option>
+              <Select.Option value="boolean">Boolean</Select.Option>
+              <Select.Option value="date">Date</Select.Option>
+              <Select.Option value="image">Image</Select.Option>
+              <Select.Option value="file">File</Select.Option>
+              <Select.Option value="array">Array</Select.Option>
+              <Select.Option value="object">Object</Select.Option>
+              <Select.Option value="percentage">Percentage</Select.Option>
             </Select>
           </div>
           {type === "reference" && (
@@ -86,15 +94,17 @@ export default function FieldAndObjectTypeForm({
                     {objectType.name}
                   </Select.Option>
                 ))}
+                <Select.Option value="users">Users</Select.Option>
+                <Select.Option value="roles">Roles</Select.Option>
               </Select>
             </div>
           )}
         </div>
       )}
 
-      {field && type === "reference" && (
+      {field && (
         <div className="flex flex-col">
-          <span>Multiple reference</span>
+          <span>Array</span>
           <Checkbox
             checked={multipleReference}
             onChange={(e) => setMultipleReference(e.target.checked)}

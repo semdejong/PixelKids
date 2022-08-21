@@ -18,6 +18,14 @@ const fieldSchema = new mongoose.Schema({
     ref: "ObjectType",
     required: false,
   },
+  uperReference: {
+    type: String,
+    required: false,
+  },
+  multipleReference: {
+    type: Boolean,
+    default: false,
+  },
   isRequired: {
     type: Boolean,
     default: false,
