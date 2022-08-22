@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Modal } from "antd";
+import SmartForm from "../SmartForm";
 
-export default function AddObject() {
+export default function AddObject({ objectType }) {
   const [visible, setVisible] = useState(false);
 
   const openModal = () => {
@@ -38,10 +39,9 @@ export default function AddObject() {
         visible={visible}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <SmartForm objectType={objectType} cb={() => setVisible(false)} />
       </Modal>
     </>
   );

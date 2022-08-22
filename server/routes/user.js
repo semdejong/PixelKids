@@ -9,7 +9,7 @@ const { User } = require("../models/user");
 
 router.get(
   "/",
-  authenticate,
+  authenticate(),
   paginatedResults(User, "roles"),
   authorize("admin"),
   async (req, res) => {
@@ -38,7 +38,7 @@ router.get(
   }
 );
 
-router.get("/:id", authenticate, authorize("admin"), async (req, res) => {
+router.get("/:id", authenticate(), authorize("admin"), async (req, res) => {
   try {
     if (req.params.id === "0" || req.params.id === req.user._id) {
       return res.status(200).json({
@@ -72,7 +72,7 @@ router.get("/:id", authenticate, authorize("admin"), async (req, res) => {
   }
 });
 
-router.patch("/:id", authenticate, authorize("admin"), async (req, res) => {
+router.patch("/:id", authenticate(), authorize("admin"), async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.id });
     if (user._id === req.user._id || req.authorized) {

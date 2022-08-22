@@ -8,7 +8,6 @@ const router = express.Router();
 
 //get all object types
 router.get("/", async (req, res) => {
-  console.log("ada");
   const objectTypes = await ObjectType.find()
     .populate({
       path: "fields",
@@ -98,7 +97,7 @@ router.get("/:id", (req, res) => {
 });
 
 //create object type
-router.post("/", authenticate, authorize("admin", true), async (req, res) => {
+router.post("/", authenticate(), authorize("admin", true), async (req, res) => {
   try {
     if (
       await ObjectType.findOne({ name: new RegExp(`^${req.body.name}$`, "i") })
@@ -174,7 +173,7 @@ router.post("/", authenticate, authorize("admin", true), async (req, res) => {
 
 router.delete(
   "/:id",
-  authenticate,
+  authenticate(),
   authorize("admin", true),
   async (req, res) => {
     try {

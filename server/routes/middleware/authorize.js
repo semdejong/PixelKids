@@ -1,6 +1,6 @@
 function authorize(role, earlyReturn = false) {
   return async (req, res, next) => {
-    if (req.user.roles.includes(role) || req.user.isAdmin) {
+    if (req?.user?.roles?.includes(role) || req?.user?.isAdmin) {
       req.authorized = true;
     } else {
       req.authorized = false;

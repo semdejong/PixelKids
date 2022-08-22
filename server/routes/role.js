@@ -9,7 +9,7 @@ const router = express.Router();
 //get all roles
 router.get(
   "/",
-  authenticate,
+  authenticate(),
   authorize("admin"),
   paginatedResults(Role),
   (req, res) => {
@@ -39,7 +39,7 @@ router.get(
 );
 
 //get one role
-router.get("/:id", authenticate, authorize("admin"), async (req, res) => {
+router.get("/:id", authenticate(), authorize("admin"), async (req, res) => {
   if (!req.authorized) {
     return res.status(403).json({
       message: "You do not have permission to access this role information",
@@ -67,7 +67,7 @@ router.get("/:id", authenticate, authorize("admin"), async (req, res) => {
 });
 
 //create one role
-router.post("/", authenticate, authorize("admin"), async (req, res) => {
+router.post("/", authenticate(), authorize("admin"), async (req, res) => {
   try {
     if (!req.authorized) {
       return res.status(403).json({
@@ -108,7 +108,7 @@ router.post("/", authenticate, authorize("admin"), async (req, res) => {
 });
 
 //update one role
-router.patch("/:id", authenticate, authorize("admin"), async (req, res) => {
+router.patch("/:id", authenticate(), authorize("admin"), async (req, res) => {
   if (!req.authorized) {
     return res.status(403).json({
       message: "You do not have permission to use this endpoint",
@@ -148,7 +148,7 @@ router.patch("/:id", authenticate, authorize("admin"), async (req, res) => {
 });
 
 //delete one role
-router.delete("/:id", authenticate, authorize("admin", true), (req, res) => {
+router.delete("/:id", authenticate(), authorize("admin", true), (req, res) => {
   if (!req.authorized) {
     return res.status(403).json({
       message: "You do not have permission to use this endpoint",

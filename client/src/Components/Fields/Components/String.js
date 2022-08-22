@@ -1,4 +1,7 @@
 import { Button, Input } from "antd";
+
+import Icon from "../../Icon";
+
 export default function String({ value, setValue, isArray, ...props }) {
   return !isArray ? (
     <Input value={value} onChange={(e) => setValue(e.target.value)} />
@@ -16,11 +19,12 @@ export default function String({ value, setValue, isArray, ...props }) {
           <Button
             type="danger"
             shape="circle"
+            size="small"
             onClick={() =>
               setValue(value.filter((value, index) => index !== i))
             }
           >
-            X
+            <Icon icon="fa-times" />
           </Button>
         </div>
       ))}
@@ -28,7 +32,7 @@ export default function String({ value, setValue, isArray, ...props }) {
       <Button
         type="primary"
         onClick={() => {
-          setValue([...value, ""]);
+          setValue(value ? [...value, ""] : [""]);
         }}
       >
         Add

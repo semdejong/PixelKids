@@ -1,10 +1,12 @@
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload, Button } from "antd";
 import React from "react";
+
+import Icon from "../../Icon";
+
 const { Dragger } = Upload;
 
 export default function File({ value, setValue, isArray, ...rest }) {
-  console.log(value);
   const props = {
     name: "files",
     multiple: true,
@@ -15,15 +17,16 @@ export default function File({ value, setValue, isArray, ...rest }) {
       const { status } = info.file;
 
       if (status !== "uploading") {
-        console.log(info.file, info.fileList);
+        message.info(`${info.file.name} file uploading...`);
       }
 
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
-        console.log(info.file.response, info.file.response.data, info.fileList);
         setValue(
           isArray
-            ? [...value, info.file.response.files[0]]
+            ? value
+              ? [...value, info.file.response.files[0]]
+              : [info.file.response.files[0]]
             : info.file.response.files[0]
         );
       } else if (status === "error") {
@@ -31,9 +34,7 @@ export default function File({ value, setValue, isArray, ...rest }) {
       }
     },
 
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
+    onDrop(e) {},
   };
 
   return (
@@ -46,8 +47,10 @@ export default function File({ value, setValue, isArray, ...rest }) {
           Click or drag file to this area to upload
         </p>
         <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading
-          company data or other band files
+          {`Support for a ${
+            isArray ? "bulk upload, with a max of 10 files." : "single upload."
+          } Strictly prohibit from uploading
+          any illegal files.`}
         </p>
       </Dragger>
 
@@ -63,11 +66,12 @@ export default function File({ value, setValue, isArray, ...rest }) {
                 <Button
                   type="danger"
                   shape="circle"
+                  size="small"
                   onClick={() =>
                     setValue(value.filter((value, index) => index !== i))
                   }
                 >
-                  X
+                  <Icon icon="fa-times" />
                 </Button>
               </div>
             ))

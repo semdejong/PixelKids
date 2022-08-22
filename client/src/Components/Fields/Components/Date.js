@@ -1,6 +1,8 @@
 import React from "react";
 import { DatePicker, Button } from "antd";
 
+import Icon from "../../Icon";
+
 export default function Date({ value, setValue, isArray, ...props }) {
   return !isArray ? (
     <DatePicker value={value} onChange={(e) => setValue(e)} {...props} />
@@ -19,23 +21,25 @@ export default function Date({ value, setValue, isArray, ...props }) {
           <Button
             type="danger"
             shape="circle"
+            size="small"
             onClick={() =>
               setValue(value.filter((value, index) => index !== i))
             }
           >
-            X
+            <Icon icon="fa-times" />
           </Button>
         </div>
       ))}
-
-      <Button
-        type="primary"
-        onClick={() => {
-          setValue([...value, ""]);
-        }}
-      >
-        Add
-      </Button>
+      <div>
+        <Button
+          type="primary"
+          onClick={() => {
+            setValue(value ? [...value, ""] : [""]);
+          }}
+        >
+          Add
+        </Button>
+      </div>
     </>
   );
 }
