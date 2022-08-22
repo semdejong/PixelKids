@@ -75,8 +75,6 @@ export default function FieldAndObjectTypeForm({
               <Select.Option value="date">Date</Select.Option>
               <Select.Option value="image">Image</Select.Option>
               <Select.Option value="file">File</Select.Option>
-              <Select.Option value="array">Array</Select.Option>
-              <Select.Option value="object">Object</Select.Option>
               <Select.Option value="percentage">Percentage</Select.Option>
             </Select>
           </div>
