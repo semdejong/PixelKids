@@ -62,7 +62,6 @@ function paginatedResults(model, populate, customQuery) {
       }
 
       res.paginatedResults = results;
-      next();
     } catch (err) {
       console.log(err);
 
@@ -70,6 +69,7 @@ function paginatedResults(model, populate, customQuery) {
         .status(500)
         .json({ message: err.message, location: "paginatedResults" });
     }
+    next();
   };
 }
 

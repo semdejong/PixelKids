@@ -191,7 +191,7 @@ const AddObjectType = ({ setIsAddingNewObjectType, addObjectType }) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col space-y-8">
+    <div className="w-full h-full flex flex-col space-y- overflow-auto">
       <div>
         <Button
           type="primary"

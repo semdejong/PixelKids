@@ -53,11 +53,11 @@ router.get(
 
       if (!amount) {
         return res.status(200).json({ amount: 0 });
+      } else {
+        return res.status(200).json({ amount });
       }
-
-      res.status(200).json({ amount });
     } catch (err) {
-      res.status(500).json({ message: "Something went wrong" });
+      return res.status(500).json({ message: "Something went wrong" });
     }
   }
 );
@@ -132,19 +132,31 @@ function validateData(data, fields) {
       }
     }
 
-    if (field.type === "string" && data[field.name]) {
+    if (
+      field.type === "string" &&
+      data[field.name] &&
+      !field.multipleReference
+    ) {
       if (typeof data[field.name] !== "string") {
         return `${field.name} must be a string`;
       }
     }
 
-    if (field.type === "number" && data[field.name]) {
+    if (
+      field.type === "number" &&
+      data[field.name] &&
+      !field.multipleReference
+    ) {
       if (typeof data[field.name] !== "number") {
         return `${field.name} must be a number`;
       }
     }
 
-    if (field.type === "boolean" && data[field.name]) {
+    if (
+      field.type === "boolean" &&
+      data[field.name] &&
+      !field.multipleReference
+    ) {
       if (typeof data[field.name] !== "boolean") {
         return `${field.name} must be a boolean`;
       }

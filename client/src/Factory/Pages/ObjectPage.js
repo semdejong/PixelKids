@@ -37,7 +37,7 @@ export default function ObjectPage() {
 }
 
 function Objects({ objectType, setSelected }) {
-  const { objects, changeObjectType, loading } = useObjects(objectType._id);
+  const { objects, loading } = useObjects(objectType._id);
 
   if (loading || !objects?.data) {
     return (
@@ -54,8 +54,6 @@ function Objects({ objectType, setSelected }) {
       </div>
     );
   }
-
-  console.log(objects.data[0].data);
 
   return (
     <div className="h-full w-full overflow-auto flex flex-col p-4 space-y-4">

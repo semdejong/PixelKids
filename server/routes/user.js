@@ -27,7 +27,7 @@ router.get(
         users: usersToReturn,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       amount: res.paginatedResults.amount,
       nextPage: res.paginatedResults.next,
       previousPage: res.paginatedResults.previous,

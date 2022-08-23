@@ -167,7 +167,7 @@ router.post("/", authenticate(), authorize("admin", true), async (req, res) => {
       });
     });
   } catch (e) {
-    res.status(500).json({ message: "ObjectType not valid" });
+    return res.status(500).json({ message: "ObjectType not valid" });
   }
 });
 
@@ -184,7 +184,7 @@ router.delete(
       await ObjectType.findByIdAndDelete(req.params.id);
       return res.status(200).json({ message: "Object type archived" });
     } catch (e) {
-      res.status(500).json({ message: "Something went wrong" });
+      return res.status(500).json({ message: "Something went wrong" });
     }
   }
 );

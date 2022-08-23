@@ -5,7 +5,7 @@ function authorize(role, earlyReturn = false) {
     } else {
       req.authorized = false;
       if (earlyReturn) {
-        res.status(403).json({
+        return res.status(403).json({
           message: "You do not have permission to access this resource",
         });
       }

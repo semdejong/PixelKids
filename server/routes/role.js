@@ -27,7 +27,7 @@ router.get(
         roles: rolesToReturn,
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       amount: res.paginatedResults.amount,
       nextPage: res.paginatedResults.next,
       previousPage: res.paginatedResults.previous,
@@ -53,13 +53,13 @@ router.get("/:id", authenticate(), authorize("admin"), async (req, res) => {
           message: "Role not found",
         });
       }
-      res.status(200).json({
+      return res.status(200).json({
         message: "Succesfully got role",
         role: role,
       });
     })
     .catch((err) => {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Failed to get role",
         error: err,
       });
@@ -133,13 +133,13 @@ router.patch("/:id", authenticate(), authorize("admin"), async (req, res) => {
     role
       .save()
       .then((role) => {
-        res.status(200).json({
+        return res.status(200).json({
           message: "Role updated",
           role: role,
         });
       })
       .catch((err) => {
-        res.status(500).json({
+        return res.status(500).json({
           message: "Something went wrong",
           error: err,
         });
@@ -164,12 +164,12 @@ router.delete("/:id", authenticate(), authorize("admin", true), (req, res) => {
     role
       .remove()
       .then(() => {
-        res.status(200).json({
+        return res.status(200).json({
           message: "Role deleted",
         });
       })
       .catch((err) => {
-        res.status(500).json({
+        return res.status(500).json({
           message: "Something went wrong",
           error: err,
         });
