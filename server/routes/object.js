@@ -105,6 +105,35 @@ router.post("/", authenticate(false), authorize("admin"), async (req, res) => {
   }
 });
 
+router.delete(
+  "/:id",
+  authenticate(false),
+  authorize("admin"),
+  async (req, res) => {
+    try {
+      const object = await Object.findById(req.params.id);
+      if (!object) {
+        return res.status(404).json({ message: "Object not found" });
+      }
+
+      const objectType = await ObjectType.findById(object.objectType);
+
+      if (
+        !authorizeCrud("delete", objectType, objectType.fields[0], req.user)
+      ) {
+        return res
+          .status(403)
+          .json({ message: "You do not have permission to use this endpoint" });
+      }
+
+      await object.remove();
+      return res.status(200).json({ message: "Object deleted" });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  }
+);
+
 function validateData(data, fields) {
   for (const field of fields) {
     if (field.required && !data[field.name]) {

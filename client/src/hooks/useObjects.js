@@ -43,7 +43,31 @@ export default function useObjects(objectTypeIdDefault) {
     const response = await Objects.create(objectTypeId, data);
     setLoading(false);
     if (response.status === 200) {
-      notification("Success", "Object created successfully", "success");
+      queryClient.invalidateQueries(["objects"]);
+      startLoading();
+      await objectsQuery.refetch();
+      if (objectsQuery.isFetching) {
+        startLoading();
+      } else {
+        stopLoading();
+        notification("Success", "Object created successfully", "success");
+        return true;
+      }
+    } else {
+      notification("Error", response.data.message, "error");
+      return false;
+    }
+  };
+
+  const deleteObject = async (objectId) => {
+    setLoading(true);
+    const response = await Objects.delete(objectId);
+    setLoading(false);
+    if (response.status === 200) {
+      startLoading();
+      await objectsQuery.refetch();
+      stopLoading();
+      notification("Success", "Object deleted successfully", "success");
       return true;
     } else {
       notification("Error", response.data.message, "error");
@@ -62,5 +86,13 @@ export default function useObjects(objectTypeIdDefault) {
     }
   };
 
-  return { objects, createObject, amountOfObjects, changeObjectType, loading };
+  return {
+    objects,
+    deleteObject,
+    createObject,
+    refetch: objectsQuery.refetch,
+    amountOfObjects,
+    changeObjectType,
+    loading,
+  };
 }

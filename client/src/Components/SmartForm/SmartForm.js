@@ -5,15 +5,24 @@ import useObjects from "../../hooks/useObjects";
 
 import Fields from "../Fields";
 
-export default function SmartForm({ objectType, cb }) {
-  const [value, setValue] = useState({});
+export default function SmartForm({
+  objectType,
+  cb,
+  editMode = false,
+  object,
+}) {
+  const [value, setValue] = useState(
+    editMode ? JSON.parse(JSON.stringify(object)) : {}
+  );
 
-  const { createObject, loading } = useObjects();
+  const { createObject, refetch, loading } = useObjects();
 
   useEffect(() => {
-    objectType.fields.forEach((field) => {
-      value[field.name] = field.multipleReference ? [] : "";
-    });
+    if (!editMode) {
+      objectType.fields.forEach((field) => {
+        value[field.name] = field.multipleReference ? [] : "";
+      });
+    }
 
     setValue(value);
   }, []);
@@ -26,7 +35,9 @@ export default function SmartForm({ objectType, cb }) {
   };
 
   const handleSubmit = async () => {
-    if (await createObject(objectType._id, value)) {
+    const result = await createObject(objectType._id, value);
+    if (result) {
+      await refetch();
       cb();
     }
   };
@@ -47,7 +58,7 @@ export default function SmartForm({ objectType, cb }) {
       ))}
       <div className="w-full flex flex-row justify-end">
         <Button type="primary" onClick={handleSubmit}>
-          Create
+          {editMode ? "Edit" : "Create"}
         </Button>
       </div>
     </div>

@@ -9,22 +9,6 @@ export default function AddObject({ objectType }) {
     setVisible(true);
   };
 
-  const handleOk = async () => {
-    // setLoading(true);
-    // const response = await addRole(name, description);
-    // if (response.status === 200) {
-    //   setVisible(false);
-    //   setLoading(false);
-    // } else {
-    //   setLoading(false);
-    //   notification(
-    //     response.data.message,
-    //     `The following error occurred: ${response.data.message}`,
-    //     "error"
-    //   );
-    // }
-  };
-
   const handleCancel = () => {
     setVisible(false);
   };
@@ -37,7 +21,6 @@ export default function AddObject({ objectType }) {
       <Modal
         title="Add Object"
         visible={visible}
-        onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
       >

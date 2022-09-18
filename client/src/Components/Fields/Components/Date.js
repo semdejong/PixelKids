@@ -1,17 +1,30 @@
 import React from "react";
 import { DatePicker, Button } from "antd";
+import moment from "moment";
 
 import Icon from "../../Icon";
 
 export default function Date({ value, setValue, isArray, ...props }) {
   return !isArray ? (
-    <DatePicker value={value} onChange={(e) => setValue(e)} {...props} />
+    <DatePicker
+      value={
+        typeof value === "string" && value.length > 0
+          ? moment(value, "YYYY-MM-DD")
+          : value
+      }
+      onChange={(e) => setValue(e)}
+      {...props}
+    />
   ) : (
     <>
       {value?.map((v, i) => (
         <div key={i} className="flex flex-row items-center space-x-4 mb-4">
           <DatePicker
-            value={v}
+            value={
+              typeof value === "object" && !value._isAMomentObject && value[i]
+                ? moment(v, "YYYY-MM-DD")
+                : v
+            }
             {...props}
             onChange={(e) => {
               value[i] = e;

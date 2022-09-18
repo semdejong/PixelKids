@@ -4,7 +4,10 @@ import Icon from "../../Icon";
 
 export default function String({ value, setValue, isArray, ...props }) {
   return !isArray ? (
-    <Input value={value} onChange={(e) => setValue(e.target.value)} />
+    <Input
+      value={value}
+      onChange={(e) => e.target.value && setValue(e.target.value)}
+    />
   ) : (
     <>
       {value?.map((v, i) => (

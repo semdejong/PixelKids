@@ -6,6 +6,7 @@ import useLoading from "../../hooks/useLoading";
 import useObjects from "../../hooks/useObjects";
 import ObjectTypeCards from "../../Components/ObjectTypeCards";
 import AddObject from "../../Components/AddObject";
+import ObjectTableAdmin from "../../Components/ObjectTableAdmin";
 
 export default function ObjectPage() {
   const [selected, setSelected] = useState(null);
@@ -37,24 +38,6 @@ export default function ObjectPage() {
 }
 
 function Objects({ objectType, setSelected }) {
-  const { objects, loading } = useObjects(objectType._id);
-
-  if (loading || !objects?.data) {
-    return (
-      <div className="h-full w-full overflow-auto flex flex-col p-4 space-y-4">
-        <div className="flex flex-row items-center justify-between w-full ">
-          <div className="flex flex-row items-center space-x-4">
-            <div>
-              <Button type="primary" onClick={() => setSelected(null)}>
-                Back
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-full w-full overflow-auto flex flex-col p-4 space-y-4">
       <div className="flex flex-row items-center justify-between w-full ">
@@ -74,6 +57,7 @@ function Objects({ objectType, setSelected }) {
           </div>
         </div>
       </div>
+      <ObjectTableAdmin objectType={objectType} />
     </div>
   );
 }
