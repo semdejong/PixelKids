@@ -15,7 +15,7 @@ export default function SmartForm({
     editMode ? JSON.parse(JSON.stringify(object)) : {}
   );
 
-  const { createObject, refetch, loading } = useObjects();
+  const { createObject, updateObject, refetch, loading } = useObjects();
 
   useEffect(() => {
     if (!editMode) {
@@ -35,7 +35,9 @@ export default function SmartForm({
   };
 
   const handleSubmit = async () => {
-    const result = await createObject(objectType._id, value);
+    const result = editMode
+      ? await updateObject(object._id, value)
+      : await createObject(objectType._id, value);
     if (result) {
       await refetch();
       cb();

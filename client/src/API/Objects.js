@@ -53,6 +53,18 @@ const Objects = {
 
     return response;
   },
+  update: async (objectId, data) => {
+    const preparedData = {
+      data: data,
+    };
+    const response = await axios
+      .patch(`/api/object/${objectId}`, preparedData)
+      .catch((err) => {
+        return err.response;
+      });
+
+    return response;
+  },
 };
 
 export default Objects;

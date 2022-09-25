@@ -22,7 +22,13 @@ router.get(
         return res.status(404).send("Object type not found");
       }
 
-      console.log(res.paginatedResults);
+      if (!authorizeCrud("read", objectType, objectType.fields[0], req.user)) {
+        return res.status(403).json({
+          message: "You do not have permission to use this endpoint",
+        });
+      }
+
+      // console.log(res.paginatedResults);
 
       const objects = await Object.find({ objectType: objectType._id });
       return res.status(200).json(objects);
@@ -134,6 +140,45 @@ router.delete(
   }
 );
 
+router.patch(
+  "/:id",
+  authenticate(false),
+  authorize("admin"),
+  async (req, res) => {
+    try {
+      const object = await Object.findById(req.params.id);
+      if (!object) {
+        return res.status(404).json({ message: "Object not found" });
+      }
+
+      const objectType = await ObjectType.findById(object.objectType);
+
+      if (
+        !authorizeCrud("update", objectType, objectType.fields[0], req.user)
+      ) {
+        return res
+          .status(403)
+          .json({ message: "You do not have permission to use this endpoint" });
+      }
+
+      const error = validateData(req.body.data, objectType.fields);
+
+      if (error) {
+        return res.status(400).json({ message: error });
+      }
+
+      object.data = req.body.data;
+      object.metaData.lastModifiedBy = req.user._id;
+      object.metaData.lastModifiedDate = Date.now();
+
+      await object.save();
+      return res.status(200).json({ message: "Object updated", object });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  }
+);
+
 function validateData(data, fields) {
   for (const field of fields) {
     if (field.required && !data[field.name]) {
@@ -201,8 +246,8 @@ function authorizeCrud(crud, objectType, field, user, object) {
   }
 
   if (crud === "read" || crud === "update" || crud === "delete") {
-    if (object.metaData.createdBy) {
-      if (user._id.equals(object.metaData.createdBy)) {
+    if (object?.metaData?.createdBy) {
+      if (user._id.equals(object?.metaData?.createdBy)) {
         return true;
       }
     }
@@ -212,11 +257,13 @@ function authorizeCrud(crud, objectType, field, user, object) {
     objectType.permissions[crud].includes(role.toString())
   );
 
+  console.log(929, userHasRightOnObjectType, field.permissions[crud].length);
+
   if (!userHasRightOnObjectType) {
     return false;
   }
 
-  return field.permissions[crud].lenght < 1
+  return field.permissions[crud].length < 1
     ? true
     : user.roles.some((role) =>
         field.permissions[crud].includes(role.toString())

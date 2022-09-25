@@ -86,10 +86,27 @@ export default function useObjects(objectTypeIdDefault) {
     }
   };
 
+  const updateObject = async (objectId, data) => {
+    setLoading(true);
+    const response = await Objects.update(objectId, data);
+    setLoading(false);
+    if (response.status === 200) {
+      startLoading();
+      await objectsQuery.refetch();
+      stopLoading();
+      notification("Success", "Object updated successfully", "success");
+      return true;
+    } else {
+      notification("Error", response.data.message, "error");
+      return false;
+    }
+  };
+
   return {
     objects,
     deleteObject,
     createObject,
+    updateObject,
     refetch: objectsQuery.refetch,
     amountOfObjects,
     changeObjectType,

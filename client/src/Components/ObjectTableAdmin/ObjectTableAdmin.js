@@ -78,9 +78,13 @@ export default function ObjectTableAdmin({ objectType }) {
       </Modal>
       <Table
         columns={columns}
-        dataSource={objects.data.map((object) => {
-          return { ...object.data, _id: object._id };
-        })}
+        dataSource={
+          Array.isArray(objects?.data)
+            ? objects?.data?.map((object) => {
+                return { ...object.data, _id: object._id };
+              })
+            : []
+        }
       />
     </div>
   );

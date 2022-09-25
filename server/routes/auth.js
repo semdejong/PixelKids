@@ -112,7 +112,6 @@ router.get("/logout", async (req, res) => {
     await Session.findOneAndDelete({ sessionToken: cookie });
   } catch (err) {
     //Return an error if the session could not be deleted
-    console.log(err.message);
   }
   //Returning a succes message with its respective code
   return res.status(200).json({ message: "You have successfully logged out" });
