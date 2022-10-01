@@ -1,5 +1,5 @@
 const Session = require("../../models/Session");
-const { User } = require("../../models/User");
+const { User } = require("../../models/user");
 
 function authenticate(earlyReturn = true) {
   return async (req, res, next) => {
