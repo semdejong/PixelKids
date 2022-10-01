@@ -51,12 +51,9 @@ export const addRole = async (name, description) => {
 };
 
 export const getObjectTypes = async () => {
-  console.log("entered");
   const response = await axios.get(`/api/objecttype`).catch((err) => {
     return err.response;
   });
-
-  console.log(response);
 
   return response;
 };

@@ -43,32 +43,37 @@ router.get("/:id", (req, res) => {
   readStream.pipe(res);
 });
 
-router.post("/", authenticate, upload.array("files", 10), async (req, res) => {
-  try {
-    const uploadedFiles = [];
+router.post(
+  "/",
+  authenticate(),
+  upload.array("files", 10),
+  async (req, res) => {
+    try {
+      const uploadedFiles = [];
 
-    for (let i = 0; i < req.files.length; i++) {
-      const random = crypto.randomBytes(10).toString("hex");
-      const fileExtension = path
-        .extname(req.files[i].originalname)
-        .toLowerCase();
-      const result = await uploadFile(req.files[i], random + fileExtension);
-      uploadedFiles.push("/api/file/" + random + fileExtension);
-      console.log(result);
+      for (let i = 0; i < req.files.length; i++) {
+        const random = crypto.randomBytes(10).toString("hex");
+        const fileExtension = path
+          .extname(req.files[i].originalname)
+          .toLowerCase();
+        const result = await uploadFile(req.files[i], random + fileExtension);
+        uploadedFiles.push("/api/file/" + random + fileExtension);
+        console.log(result);
+      }
+
+      // if (inlineFileFilter(req.file, req.body.type)) {
+      return res.status(200).json({
+        message: "File uploaded!",
+        files: uploadedFiles,
+      });
+      //} else {
+      //  return res.status(500).json({ message: "Only .png files are allowed!" });
+      //}
+    } catch (err) {
+      res.status(500).json({ message: err });
+      console.log(err);
     }
-
-    // if (inlineFileFilter(req.file, req.body.type)) {
-    return res.status(200).json({
-      message: "File uploaded!",
-      files: uploadedFiles,
-    });
-    //} else {
-    //  return res.status(500).json({ message: "Only .png files are allowed!" });
-    //}
-  } catch (err) {
-    res.status(500).json({ message: err });
-    console.log(err);
   }
-});
+);
 
 module.exports = router;

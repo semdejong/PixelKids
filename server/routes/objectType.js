@@ -8,7 +8,6 @@ const router = express.Router();
 
 //get all object types
 router.get("/", async (req, res) => {
-  console.log("ada");
   const objectTypes = await ObjectType.find()
     .populate({
       path: "fields",
@@ -98,7 +97,7 @@ router.get("/:id", (req, res) => {
 });
 
 //create object type
-router.post("/", authenticate, authorize("admin", true), async (req, res) => {
+router.post("/", authenticate(), authorize("admin", true), async (req, res) => {
   try {
     if (
       await ObjectType.findOne({ name: new RegExp(`^${req.body.name}$`, "i") })
@@ -168,13 +167,13 @@ router.post("/", authenticate, authorize("admin", true), async (req, res) => {
       });
     });
   } catch (e) {
-    res.status(500).json({ message: "ObjectType not valid" });
+    return res.status(500).json({ message: "ObjectType not valid" });
   }
 });
 
 router.delete(
   "/:id",
-  authenticate,
+  authenticate(),
   authorize("admin", true),
   async (req, res) => {
     try {
@@ -185,7 +184,7 @@ router.delete(
       await ObjectType.findByIdAndDelete(req.params.id);
       return res.status(200).json({ message: "Object type archived" });
     } catch (e) {
-      res.status(500).json({ message: "Something went wrong" });
+      return res.status(500).json({ message: "Something went wrong" });
     }
   }
 );
