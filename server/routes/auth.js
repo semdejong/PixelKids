@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 
 const { User, validate } = require("../models/user");
-const Session = require("../models/session");
+const Session = require("../models/Session");
 
 const router = express.Router();
 
