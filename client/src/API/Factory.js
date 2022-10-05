@@ -58,9 +58,23 @@ export const getObjectTypes = async () => {
   return response;
 };
 
-export const addObjectType = async (name, description, fields, permissions) => {
+export const addObjectType = async (
+  name,
+  description,
+  fields,
+  permissions,
+  adminOnly,
+  nonUser
+) => {
   const response = await axios
-    .post(`/api/objectType`, { name, description, fields, permissions })
+    .post(`/api/objectType`, {
+      name,
+      description,
+      fields,
+      permissions,
+      adminOnly,
+      nonUser,
+    })
     .catch((err) => {
       return err.response;
     });

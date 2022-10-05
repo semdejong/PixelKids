@@ -245,6 +245,14 @@ function authorizeCrud(crud, objectType, field, user, object) {
     return true;
   }
 
+  if (objectType.nonUser && objectType.permissions[crud].length === 0) {
+    return true;
+  }
+
+  if (objectType.adminOnly && objectType.permissions[crud].length === 0) {
+    return false;
+  }
+
   if (crud === "read" || crud === "update" || crud === "delete") {
     if (object?.metaData?.createdBy) {
       if (user._id.equals(object?.metaData?.createdBy)) {
@@ -256,8 +264,6 @@ function authorizeCrud(crud, objectType, field, user, object) {
   const userHasRightOnObjectType = user.roles.some((role) =>
     objectType.permissions[crud].includes(role.toString())
   );
-
-  console.log(929, userHasRightOnObjectType, field.permissions[crud].length);
 
   if (!userHasRightOnObjectType) {
     return false;

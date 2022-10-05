@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Table, Typography, Tag, Popconfirm } from "antd";
+import { Button, Table, Tag, Popconfirm, Checkbox } from "antd";
 
 import useLoading from "../../hooks/useLoading";
 import useObjectTypes from "../../hooks/useObjectTypes";
@@ -112,6 +112,22 @@ const ObjectList = ({
       ],
     },
     {
+      title: "Admin Only",
+      dataIndex: "adminOnly",
+      align: "center",
+      render: (_, record) => {
+        return <Checkbox checked={record.adminOnly} readonly={true} />;
+      },
+    },
+    {
+      title: "Non User",
+      dataIndex: "nonUser",
+      align: "center",
+      render: (_, record) => {
+        return <Checkbox checked={record.nonUser} readonly={true} />;
+      },
+    },
+    {
       title: "Actions",
       dataIndex: "Actions",
       align: "center",
@@ -171,6 +187,9 @@ const AddObjectType = ({ setIsAddingNewObjectType, addObjectType }) => {
     update: [],
     delete: [],
   });
+  const [adminOnly, setAdminOnly] = useState(false);
+  const [nonUser, setNonUser] = useState(false);
+
   const [fields, setFields] = useState([]);
 
   const updatePermission = (permission, roles) => {
@@ -182,11 +201,24 @@ const AddObjectType = ({ setIsAddingNewObjectType, addObjectType }) => {
       name,
       description,
       fields,
-      permissions
+      permissions,
+      adminOnly,
+      nonUser
     );
 
     if (response.status === 200) {
       setIsAddingNewObjectType(false);
+    }
+  };
+
+  const setAdminOnlyAndNonUser = (value, checked) => {
+    if (value === "adminOnly") {
+      setAdminOnly(checked);
+      setNonUser(false);
+    }
+    if (value === "nonUser") {
+      setNonUser(checked);
+      setAdminOnly(false);
     }
   };
 
@@ -211,6 +243,22 @@ const AddObjectType = ({ setIsAddingNewObjectType, addObjectType }) => {
         setDescription={setDescription}
         updatePermission={updatePermission}
       />
+      <div className="flex flex-col mt-2">
+        <span>Admin Only</span>
+        <Checkbox
+          checked={adminOnly}
+          onChange={(e) =>
+            setAdminOnlyAndNonUser("adminOnly", e.target.checked)
+          }
+        />
+      </div>
+      <div className="flex flex-col mt-2 mb-2">
+        <span>Non User</span>
+        <Checkbox
+          checked={nonUser}
+          onChange={(e) => setAdminOnlyAndNonUser("nonUser", e.target.checked)}
+        />
+      </div>
       <div>
         <span>Fields</span>
         <FieldsSelector fields={fields} setFields={setFields} />

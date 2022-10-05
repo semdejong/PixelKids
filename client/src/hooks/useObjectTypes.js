@@ -20,7 +20,14 @@ export default function useObjectTypes() {
     setObjectTypes(objectTypesQuery.data);
   }, [objectTypesQuery.data]);
 
-  const addObjectType = async (name, description, fields, permissions) => {
+  const addObjectType = async (
+    name,
+    description,
+    fields,
+    permissions,
+    adminOnly,
+    nonUser
+  ) => {
     if (!name || name.trim() === "") {
       notification("Error", "Please enter a name for the object type", "error");
       return;
@@ -30,7 +37,9 @@ export default function useObjectTypes() {
       name,
       description,
       fields,
-      permissions
+      permissions,
+      adminOnly,
+      nonUser
     );
 
     if (response.status === 200) {

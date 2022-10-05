@@ -152,6 +152,8 @@ router.post("/", authenticate(), authorize("admin", true), async (req, res) => {
         update: req.body.permissions.update,
         delete: req.body.permissions.delete,
       },
+      adminOnly: req.body.adminOnly,
+      nonUser: req.body.nonUser,
     });
 
     newObjectType.save((err, objectType) => {

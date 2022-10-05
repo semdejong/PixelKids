@@ -99,6 +99,14 @@ const objectTypeSchema = new mongoose.Schema({
     update: [{ type: mongoose.Schema.Types.ObjectId, ref: "Role" }],
     delete: [{ type: mongoose.Schema.Types.ObjectId, ref: "Role" }],
   }),
+  adminOnly: {
+    type: Boolean,
+    default: false,
+  },
+  nonUser: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = {
