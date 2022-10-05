@@ -74,9 +74,11 @@ export default function UserPage() {
         return (
           <MultiEnum
             data={
-              record.isAdmin
-                ? [...roles, { _id: "admin", name: "Admin" }]
-                : [...roles]
+              Array.isArray(roles)
+                ? record.isAdmin
+                  ? [...roles, { _id: "admin", name: "Admin" }]
+                  : [...roles]
+                : []
             }
             options={
               fetchedRoles

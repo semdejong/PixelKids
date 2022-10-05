@@ -38,7 +38,6 @@ export default function Fields({ field, value, setValue }) {
       />
     );
   } else if (field.type === "date") {
-    console.log("date", typeof value[field.name], value[field.name]);
     Component = (
       <Date
         isArray={field.multipleReference}

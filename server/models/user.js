@@ -33,7 +33,13 @@ const userSchema = mongoose.Schema({
     max: 20,
     required: false,
   },
-
+  APIKey: {
+    type: String,
+    min: 5,
+    max: 1000,
+    required: false,
+    unique: true,
+  },
   dateCreated: {
     type: Date,
     default: Date.now,

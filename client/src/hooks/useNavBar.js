@@ -20,8 +20,8 @@ export default function useNavBar() {
   const rightNavBar = [
     {
       label: "Logout",
-      onClick: () => {
-        logout();
+      onClick: async () => {
+        await logout();
       },
       type: "primary",
       show: document.cookie.includes("isAuth"),

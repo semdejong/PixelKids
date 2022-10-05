@@ -64,3 +64,21 @@ export const logout = async () => {
 
   return response;
 };
+
+export const getApiKey = async () => {
+  const response = await axios.post(`/api/auth/apikey`).catch((err) => {
+    return err.response;
+  });
+
+  if (response.status === 200) {
+    notification(
+      "API key generated",
+      "Your API key has been generated.",
+      "info"
+    );
+  } else {
+    notification("API key failed", "Something went wrong.", "error");
+  }
+
+  return response;
+};

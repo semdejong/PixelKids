@@ -7,6 +7,8 @@ const { v4: uuidv4 } = require("uuid");
 const { User, validate } = require("../models/user");
 const Session = require("../models/Session");
 
+const { authenticate } = require("./middleware/authenticate");
+
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -100,12 +102,13 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/logout", async (req, res) => {
+router.get("/logout", authenticate(), async (req, res) => {
   //Getting the cookie from the request (httpCookies)
   const cookie = req.cookies.session;
 
   //Deleting the cookie from the response object
   res.clearCookie("session");
+  res.clearCookie("isAuth");
 
   try {
     //Deleting the session from the database
@@ -115,6 +118,27 @@ router.get("/logout", async (req, res) => {
   }
   //Returning a succes message with its respective code
   return res.status(200).json({ message: "You have successfully logged out" });
+});
+
+router.post("/apikey", authenticate(), async (req, res) => {
+  //Getting the user from the request
+  const user = req.user;
+
+  //Generating a new api key for the user
+  const apiKey = uuidv4();
+
+  //Hashing the api key using bcrypt
+  const salt = await bcrypt.genSalt(10);
+  const hashedApiKey = await bcrypt.hash(apiKey, salt);
+
+  //Updating the user with the new api key
+  user.APIKey = hashedApiKey;
+
+  //Saving the user to the database
+  await user.save();
+
+  //Returning the api key with a success code
+  return res.status(200).json({ apiKey: apiKey + "#" + user._id });
 });
 
 module.exports = router;

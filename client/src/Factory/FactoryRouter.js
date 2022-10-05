@@ -1,6 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
-import { ObjectPage, ObjectTypePage, UserPage, RolePage } from "./Pages";
+import {
+  ObjectPage,
+  ObjectTypePage,
+  UserPage,
+  RolePage,
+  SettingsPage,
+} from "./Pages";
 import useFactorySideBar from "./Hooks/useFactorySideBar";
 
 import SideBar from "../Components/SideBar";
@@ -21,6 +27,7 @@ export default function FactoryRouter() {
           <Route path="objectType" element={<ObjectTypePage />} />
           <Route path="users" element={<UserPage />} />
           <Route path="roles" element={<RolePage />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Routes>
       </div>
     </div>

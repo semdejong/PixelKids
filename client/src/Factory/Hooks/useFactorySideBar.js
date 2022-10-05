@@ -49,7 +49,9 @@ export default function useFactorySideBar() {
   const bottomSideBar = [
     {
       label: "Settings",
-      onClick: () => {},
+      onClick: () => {
+        navigate("/factory/settings");
+      },
       icon: "fa-gears",
       show: document.cookie.includes("isAuth"),
     },
