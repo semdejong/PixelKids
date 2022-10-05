@@ -189,6 +189,10 @@ function validateData(data, fields) {
       return `${field.name} is not of the right type`;
     }
 
+    if (field.type === "reference" && !data[field.name]) {
+      return `${field.name} is required`;
+    }
+
     if (
       field.multipleReference &&
       Array.isArray(data[field.name]) &&

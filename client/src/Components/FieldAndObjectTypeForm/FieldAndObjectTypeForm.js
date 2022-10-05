@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox, Input, Select } from "antd";
 
 import useRoles from "../../hooks/useRoles";
@@ -10,10 +10,12 @@ export default function FieldAndObjectTypeForm({
   permissions,
   type,
   reference,
+  referenceField,
   required,
   multipleReference,
   setMultipleReference,
   setReference,
+  setReferenceField,
   setType,
   setName,
   setRequired,
@@ -23,6 +25,23 @@ export default function FieldAndObjectTypeForm({
 }) {
   const { roles } = useRoles();
   const { objectTypes } = useObjectTypes();
+
+  const [objectTypeFields, setObjectTypeFields] = useState([]);
+
+  useEffect(() => {
+    setObjectTypeFields(
+      Array.isArray(objectTypes?.data?.objectTypes)
+        ? objectTypes?.data?.objectTypes
+            ?.find((objectType) => objectType._id === reference)
+            ?.fields.map((field) => {
+              return {
+                label: field.name,
+                value: field.name,
+              };
+            }) || []
+        : []
+    );
+  }, [objectTypes, reference]);
 
   //   useEffect(() => {
   //     changePagination({ limit: 100, page: 1 }); (from roles)
@@ -60,12 +79,12 @@ export default function FieldAndObjectTypeForm({
             type === "reference" && "justify-center"
           }`}
         >
-          <div className="w-64 flex flex-col ">
+          <div className="w-1/3 flex flex-col ">
             <span>Type</span>
             <Select
               placeholder="type"
               value={type}
-              className="w-44"
+              className="w-11/12"
               onChange={setType}
             >
               <Select.Option value="reference">Reference</Select.Option>
@@ -79,23 +98,41 @@ export default function FieldAndObjectTypeForm({
             </Select>
           </div>
           {type === "reference" && (
-            <div className="w-64 flex flex-col ">
-              <span>Reference</span>
-              <Select
-                placeholder="reference"
-                value={reference}
-                onChange={setReference}
-                className="w-44"
-              >
-                {objectTypes.data.objectTypes.map((objectType) => (
-                  <Select.Option value={objectType._id}>
-                    {objectType.name}
-                  </Select.Option>
-                ))}
-                <Select.Option value="users">Users</Select.Option>
-                <Select.Option value="roles">Roles</Select.Option>
-              </Select>
-            </div>
+            <>
+              <div className="w-1/3 flex flex-col ">
+                <span>Reference</span>
+                <Select
+                  placeholder="reference"
+                  value={reference}
+                  onChange={setReference}
+                  className="w-11/12"
+                >
+                  {objectTypes.data.objectTypes.map((objectType) => (
+                    <Select.Option value={objectType._id}>
+                      {objectType.name}
+                    </Select.Option>
+                  ))}
+                  <Select.Option value="users">Users</Select.Option>
+                  <Select.Option value="roles">Roles</Select.Option>
+                </Select>
+              </div>
+              <div className="w-1/3 flex flex-col ">
+                <span>Field</span>
+                <Select
+                  placeholder="field"
+                  value={referenceField}
+                  onChange={setReferenceField}
+                  className="w-3/4"
+                >
+                  {objectTypeFields.map((objectTypeField) => (
+                    <Select.Option value={objectTypeField.value}>
+                      {objectTypeField.label}
+                    </Select.Option>
+                  ))}
+                  {/* add user and role fields */}
+                </Select>
+              </div>
+            </>
           )}
         </div>
       )}

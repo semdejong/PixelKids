@@ -14,6 +14,7 @@ export default function FieldEditorModal({
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [reference, setReference] = useState("");
+  const [referenceField, setReferenceField] = useState("");
   const [multipleReference, setMultipleReference] = useState(false);
   const [required, setRequired] = useState(false);
   const [permissions, setPermissions] = useState({
@@ -35,6 +36,7 @@ export default function FieldEditorModal({
       description,
       type,
       reference,
+      referenceField,
       multipleReference,
       required,
       permissions,
@@ -45,6 +47,7 @@ export default function FieldEditorModal({
       setDescription("");
       setType("");
       setReference("");
+      setReferenceField("");
       setMultipleReference(false);
       setRequired(false);
       setPermissions({
@@ -74,6 +77,7 @@ export default function FieldEditorModal({
         description={description}
         type={type}
         reference={reference}
+        referenceField={referenceField}
         multipleReference={multipleReference}
         required={required}
         permissions={permissions}
@@ -81,6 +85,7 @@ export default function FieldEditorModal({
         setDescription={setDescription}
         setType={setType}
         setReference={setReference}
+        setReferenceField={setReferenceField}
         setRequired={setRequired}
         setMultipleReference={setMultipleReference}
         updatePermission={updatePermission}

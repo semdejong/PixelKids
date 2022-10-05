@@ -22,6 +22,10 @@ const fieldSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  referenceField: {
+    type: String,
+    required: false,
+  },
   multipleReference: {
     type: Boolean,
     default: false,

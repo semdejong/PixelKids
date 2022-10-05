@@ -125,6 +125,7 @@ router.post("/", authenticate(), authorize("admin", true), async (req, res) => {
               : field.reference === "Roles"
               ? "Roles"
               : null,
+          referenceField: field.referenceField,
           isRequired: field.isRequired,
           multipleReference: field.multipleReference,
           metaData: {

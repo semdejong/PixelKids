@@ -35,10 +35,13 @@ export default function FieldSelectorBox({ fields, setFields }) {
       return false;
     }
 
-    if (field.type === "reference" && !field.reference) {
+    if (
+      field.type === "reference" &&
+      (!field.reference || !field.referenceField)
+    ) {
       notification(
         "Field not added",
-        `reason: the field ${field.name} is a reference field and must have a reference`,
+        `reason: the field ${field.name} is a reference field and must have a reference and reference field`,
         "error"
       );
       return false;
