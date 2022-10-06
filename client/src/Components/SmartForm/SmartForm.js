@@ -27,6 +27,12 @@ export default function SmartForm({
     setValue(value);
   }, []);
 
+  useEffect(() => {
+    if (editMode) {
+      setValue(JSON.parse(JSON.stringify(object)));
+    }
+  }, [editMode, object]);
+
   const updateField = (fieldName, newValue) => {
     setValue({
       ...value,

@@ -57,7 +57,7 @@ export default function Fields({ field, value, setValue }) {
     Component = (
       <Reference
         isArray={field.multipleReference}
-        objectTypeID={field.reference._id}
+        objectTypeID={field?.reference?._id || field?.reference}
         fieldID={field.referenceField}
         value={value[field.name]}
         setValue={setValue}

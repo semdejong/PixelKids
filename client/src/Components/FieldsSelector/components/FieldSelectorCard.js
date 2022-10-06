@@ -29,9 +29,17 @@ export default function FieldSelectorCard({ field, deleteField }) {
           </span>
           {field.type === "reference" && (
             <span className="font-extralight text-sm text-gray-400 overflow-clip">
-              {objectTypes?.data?.objectTypes?.find(
-                (objectType) => objectType._id === field.reference
-              ).name || "Loading...."}
+              {field.reference === "users" || field.reference === "roles" ? (
+                <span>{field.reference}</span>
+              ) : (
+                <>
+                  (
+                  {objectTypes?.data?.objectTypes?.find(
+                    (objectType) => objectType._id === field.reference
+                  )?.name || "Loading...."}
+                  )
+                </>
+              )}
             </span>
           )}
         </div>

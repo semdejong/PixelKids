@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
 import useLoading from "../../../../hooks/useLoading";
+import useCookies from "../../../../hooks/useCookies";
+
 import {
   login as loginEndpoint,
   logout as logoutEndpoint,
@@ -9,6 +11,7 @@ import {
 
 export default function useAuthHook() {
   const { startLoading, stopLoading } = useLoading();
+  const { deleteCookie } = useCookies();
   const navigate = useNavigate();
 
   const register = async (fullname, email, password) => {
@@ -28,6 +31,9 @@ export default function useAuthHook() {
     startLoading();
     await logoutEndpoint();
     stopLoading();
+
+    deleteCookie("isAuth");
+    deleteCookie("session");
 
     navigate("/auth/login");
   };

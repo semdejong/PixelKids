@@ -1,5 +1,6 @@
 import axios from "axios";
 import notification from "../Components/Notification";
+import handleResponse from "../API/responseHandler";
 
 export const register = async (fullname, email, password) => {
   const response = await axios
@@ -12,10 +13,10 @@ export const register = async (fullname, email, password) => {
       return err.response;
     });
 
+  handleResponse(response);
+
   if (response.status === 200) {
     notification("Register successful", "Registration successful", "success");
-  } else {
-    notification("Register failed", response.data.message, "error");
   }
 
   return response;
@@ -39,9 +40,8 @@ export const login = async (email, password) => {
       "You have successfully logged in.",
       "success"
     );
-  } else {
-    notification("Login failed", "Please check your credentials.", "error");
   }
+  handleResponse(response);
 
   return response;
 };
@@ -58,9 +58,9 @@ export const logout = async () => {
       "You have successfully logged out.",
       "success"
     );
-  } else {
-    notification("Logout failed", "Something went wrong.", "error");
   }
+
+  handleResponse(response);
 
   return response;
 };
@@ -76,9 +76,9 @@ export const getApiKey = async () => {
       "Your API key has been generated.",
       "info"
     );
-  } else {
-    notification("API key failed", "Something went wrong.", "error");
   }
+
+  handleResponse(response);
 
   return response;
 };

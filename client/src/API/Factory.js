@@ -1,4 +1,5 @@
 import axios from "axios";
+import handleResponse from "./responseHandler";
 
 export const getUsers = async (page, limit) => {
   const response = await axios
@@ -6,6 +7,8 @@ export const getUsers = async (page, limit) => {
     .catch((err) => {
       return err.response;
     });
+
+  handleResponse(response);
 
   return response;
 };
@@ -17,6 +20,8 @@ export const updateUser = async (user) => {
       return err.response;
     });
 
+  handleResponse(response);
+
   return response;
 };
 
@@ -26,6 +31,8 @@ export const getRoles = async (page, limit) => {
     .catch((err) => {
       return err.response;
     });
+
+  handleResponse(response);
 
   return response;
 };
@@ -37,6 +44,8 @@ export const updateRole = async (role) => {
       return err.response;
     });
 
+  handleResponse(response);
+
   return response;
 };
 
@@ -47,6 +56,8 @@ export const addRole = async (name, description) => {
       return err.response;
     });
 
+  handleResponse(response);
+
   return response;
 };
 
@@ -54,6 +65,8 @@ export const getObjectTypes = async () => {
   const response = await axios.get(`/api/objecttype`).catch((err) => {
     return err.response;
   });
+
+  handleResponse(response);
 
   return response;
 };
@@ -79,6 +92,8 @@ export const addObjectType = async (
       return err.response;
     });
 
+  handleResponse(response);
+
   return response;
 };
 
@@ -86,6 +101,8 @@ export const deleteObjectType = async (id) => {
   const response = await axios.delete(`/api/objectType/${id}`).catch((err) => {
     return err.response;
   });
+
+  handleResponse(response);
 
   return response;
 };

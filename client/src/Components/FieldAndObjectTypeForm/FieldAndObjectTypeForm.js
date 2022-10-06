@@ -129,7 +129,20 @@ export default function FieldAndObjectTypeForm({
                       {objectTypeField.label}
                     </Select.Option>
                   ))}
-                  {/* add user and role fields */}
+                  {reference === "users" && (
+                    <>
+                      <Select.Option value="fullname">Fullname</Select.Option>
+                      <Select.Option value="email">Email</Select.Option>
+                    </>
+                  )}
+                  {reference === "roles" && (
+                    <>
+                      <Select.Option value="name">Name</Select.Option>
+                      <Select.Option value="description">
+                        Description
+                      </Select.Option>
+                    </>
+                  )}
                 </Select>
               </div>
             </>

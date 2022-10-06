@@ -1,4 +1,5 @@
 import axios from "axios";
+import handleResponse from "./responseHandler";
 
 const Objects = {
   create: async (objectTypeId, data) => {
@@ -12,6 +13,8 @@ const Objects = {
         return err.response;
       });
 
+    handleResponse(response);
+
     return response;
   },
   amount: async (objectTypeId) => {
@@ -20,6 +23,8 @@ const Objects = {
       .catch((err) => {
         return err.response;
       });
+
+    handleResponse(response);
 
     return response;
   },
@@ -42,6 +47,8 @@ const Objects = {
         return err.response;
       });
 
+    handleResponse(response);
+
     return response;
   },
   delete: async (objectId) => {
@@ -50,6 +57,8 @@ const Objects = {
       .catch((err) => {
         return err.response;
       });
+
+    handleResponse(response);
 
     return response;
   },
@@ -62,6 +71,8 @@ const Objects = {
       .catch((err) => {
         return err.response;
       });
+
+    handleResponse(response);
 
     return response;
   },

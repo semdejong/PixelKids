@@ -26,7 +26,7 @@ export default function ObjectTableAdmin({ objectType }) {
   };
 
   const openEditMode = (object) => {
-    setSelected(object);
+    setSelected(JSON.parse(JSON.stringify(object)));
     setVisible(true);
   };
 
