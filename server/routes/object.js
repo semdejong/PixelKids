@@ -77,16 +77,16 @@ router.post("/", authenticate(false), authorize("admin"), async (req, res) => {
       return res.status(404).json({ message: "Object type not found" });
     }
 
-    const error = validateData(req.body.data, objectType.fields);
-
-    if (error) {
-      return res.status(400).json({ message: error });
-    }
-
     if (!authorizeCrud("write", objectType, objectType.fields[0], req.user)) {
       return res
         .status(403)
         .json({ message: "You do not have permission to use this endpoint" });
+    }
+
+    const error = validateData(req.body.data, objectType.fields);
+
+    if (error) {
+      return res.status(400).json({ message: error });
     }
 
     objectData = {

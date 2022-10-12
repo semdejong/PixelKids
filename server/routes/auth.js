@@ -60,14 +60,14 @@ router.post("/login", async (req, res) => {
         .status(403)
         .json({ message: "These credentials are not valid." });
 
-    //Deleting the old session for the user
-    await Session.findOneAndDelete({ user: user._id });
+    // //Delete all sessions for the user (unslahs to disable multi device login, this way users will only be able to login on one device at a time)
+    // await Session.deleteMany({ user: user._id });
 
     //Create a new session for the user based on a uuid
     const sessionToken = uuidv4();
 
     //Create a new session for the user based on the model and saving it to the database
-    const uploadedSession = await new Session({
+    await new Session({
       user: user._id,
       sessionToken: sessionToken,
     }).save();
@@ -93,6 +93,7 @@ router.post("/login", async (req, res) => {
         expiryDate: expireDate,
         username: user.username,
         fullname: user.fullname,
+        sessionToken: sessionToken,
         roles: user.roles,
       })
       .send();
