@@ -141,4 +141,6 @@ router.post("/apikey", authenticate(), async (req, res) => {
   return res.status(200).json({ apiKey: apiKey + "#" + user._id });
 });
 
+router.post("/setup");
+
 module.exports = router;
