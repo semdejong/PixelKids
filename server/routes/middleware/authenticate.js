@@ -13,11 +13,12 @@ function authenticate(earlyReturn = true) {
       if (req.cookies.session) {
         sessionToken = req.cookies.session;
       } else {
-        const authHeader = req.headers["authorization"];
+        const authHeader =
+          req.headers["authorization"] || req.headers["Authorization"];
         sessionToken = authHeader && authHeader.split(" ")[1];
       }
 
-      console.log(sessionToken);
+      console.log(sessionToken, req.headers);
 
       if (!sessionToken && !APIKey && earlyReturn)
         return res.status(401).json({ message: "Invalid session token. 1" });

@@ -52,7 +52,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
-if (process.env.NODE_ENV !== "production" && false) {
+if (process.env.NODE_ENV !== "production") {
   app.use(async (req, res, next) => {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     await delay(1200);
@@ -62,7 +62,7 @@ if (process.env.NODE_ENV !== "production" && false) {
 
 //Add routes
 const testRouter = require("./routes/test");
-app.use("/api/ping", testRouter);
+app.use("/api/test", testRouter);
 
 const authRouter = require("./routes/auth");
 app.use("/api/auth", authRouter);

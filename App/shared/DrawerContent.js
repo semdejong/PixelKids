@@ -7,16 +7,10 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "react-native-heroicons/solid";
 
-import { logout } from "../API/Auth";
+import useLogin from "../hooks/useLogin";
 
 const DrawerContent = ({ navigation, ...props }) => {
-  const handleLogout = async () => {
-    const response = await logout();
-
-    if (response.status === 200) {
-      navigation.navigate("Login");
-    }
-  };
+  const { handleLogout } = useLogin();
 
   const state = useNavigationState((state) => state);
   const routeName = state?.routeNames[state.index];

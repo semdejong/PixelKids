@@ -1,7 +1,9 @@
 import { View, Text, SafeAreaView } from "react-native";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { Input, Button, Spinner } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
+
+import useLogin from "../hooks/useLogin";
 
 import { login } from "../API/Auth";
 
@@ -12,10 +14,16 @@ const LoadingIndicator = () => (
 );
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    errorMessage,
+    setErrorMessage,
+    loading,
+    handleLogin,
+  } = useLogin();
 
   const navigationHook = useNavigation();
 
@@ -28,19 +36,6 @@ const LoginScreen = ({ navigation }) => {
     setPassword("");
     setErrorMessage("");
   }, []);
-
-  const handleLogin = async () => {
-    setErrorMessage("");
-    setLoading(true);
-    const response = await login(email, password);
-    setLoading(false);
-
-    if (response.status === 200) {
-      navigation.navigate("Home");
-    } else {
-      setErrorMessage(response.data.message);
-    }
-  };
 
   return (
     <SafeAreaView>

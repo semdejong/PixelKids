@@ -1,6 +1,8 @@
 import axios from "axios";
 import { REACT_APP_BASE_URL } from "@env";
 
+import getHeaders from "./headerPrepared";
+
 const Objects = {
   create: async (objectTypeId, data) => {
     const preparedData = {
@@ -8,7 +10,7 @@ const Objects = {
       data: data,
     };
     const response = await axios
-      .post(REACT_APP_BASE_URL + `/api/object`, preparedData)
+      .post(REACT_APP_BASE_URL + `/api/object`, preparedData, getHeaders())
       .catch((err) => {
         return err.response;
       });
@@ -17,7 +19,10 @@ const Objects = {
   },
   amount: async (objectTypeId) => {
     const response = await axios
-      .get(REACT_APP_BASE_URL + `/api/object/amount/${objectTypeId}`)
+      .get(
+        REACT_APP_BASE_URL + `/api/object/amount/${objectTypeId}`,
+        getHeaders()
+      )
       .catch((err) => {
         return err.response;
       });
@@ -25,6 +30,7 @@ const Objects = {
     return response;
   },
   get: async (objectTypeId, page, limit, dataFilter, metaDataFilter) => {
+    console.log(await getHeaders());
     if (!page) {
       page = 1;
     }
@@ -58,7 +64,8 @@ const Objects = {
           `/api/object?objectType=${objectTypeId}&page=${page}&limit=${limit}&dataFilter=1` +
           dataFilterString +
           "&metaDataFilter=1" +
-          metaDataFilterString
+          metaDataFilterString,
+        await getHeaders()
       )
       .catch((err) => {
         return err.response;
@@ -68,7 +75,7 @@ const Objects = {
   },
   delete: async (objectId) => {
     const response = await axios
-      .delete(`/api/object/${objectId}`)
+      .delete(`/api/object/${objectId}`, await getHeaders())
       .catch((err) => {
         return err.response;
       });
@@ -80,7 +87,7 @@ const Objects = {
       data: data,
     };
     const response = await axios
-      .patch(`/api/object/${objectId}`, preparedData)
+      .patch(`/api/object/${objectId}`, preparedData, await getHeaders())
       .catch((err) => {
         return err.response;
       });

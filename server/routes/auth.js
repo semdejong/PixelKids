@@ -80,17 +80,18 @@ router.post("/login", async (req, res) => {
     }).save();
 
     //TODO: implement 2fa
-
-    //Calculating the expiration date for the session (24hrs)
     const expireDate = new Date(new Date().getTime() + 24 * 60 * 60000);
+    if (!req.body.isMobile) {
+      //Calculating the expiration date for the session (24hrs)
 
-    //Adding a cookie to the response with the sessionToken
-    res.cookie("session", sessionToken, {
-      sameSite: "strict",
-      path: "/",
-      expires: expireDate,
-      httpOnly: true,
-    });
+      //Adding a cookie to the response with the sessionToken
+      res.cookie("session", sessionToken, {
+        sameSite: "strict",
+        path: "/",
+        expires: expireDate,
+        httpOnly: true,
+      });
+    }
 
     //Returning the response obj with a success code
     return res
