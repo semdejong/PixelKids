@@ -25,12 +25,19 @@ router.post("/register", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
+  const apiKey = uuidv4();
+
+  //Hashing the api key using bcrypt
+  const saltForAPi = await bcrypt.genSalt(10);
+  const hashedApiKey = await bcrypt.hash(apiKey, saltForAPi);
+
   try {
     //Create a new user based on the model and save it to the database
     const uploadedUser = await new User({
       fullname: req.body.fullname,
       email: req.body.email,
       password: hashedPassword,
+      APIKey: hashedApiKey,
     }).save();
 
     //Return the user without a password and with a success code

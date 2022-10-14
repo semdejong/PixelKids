@@ -17,6 +17,8 @@ function authenticate(earlyReturn = true) {
         sessionToken = authHeader && authHeader.split(" ")[1];
       }
 
+      console.log(sessionToken);
+
       if (!sessionToken && !APIKey && earlyReturn)
         return res.status(401).json({ message: "Invalid session token. 1" });
 

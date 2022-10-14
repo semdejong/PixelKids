@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Table, Tag, Popconfirm, Checkbox } from "antd";
+import { Button, Table, Tag, Popconfirm, Checkbox, Tooltip } from "antd";
 
 import useLoading from "../../hooks/useLoading";
 import useObjectTypes from "../../hooks/useObjectTypes";
@@ -133,16 +133,26 @@ const ObjectList = ({
       align: "center",
       render: (_, record) => {
         return (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => {
-              deleteObjectType(record._id);
-            }}
-          >
-            <span className="text-red-500 cursor-pointer text-xl">
-              <Icon icon="fa-trash" />
-            </span>
-          </Popconfirm>
+          <div className="flex flex-row space-x-4">
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => {
+                deleteObjectType(record._id);
+              }}
+            >
+              <span className="text-red-500 cursor-pointer">
+                <Icon icon="fa-trash" />
+              </span>
+            </Popconfirm>
+            <Tooltip title="Copy">
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={() => navigator.clipboard.writeText(record._id)}
+              >
+                <Icon icon="fa-copy" />
+              </span>
+            </Tooltip>
+          </div>
         );
       },
     },

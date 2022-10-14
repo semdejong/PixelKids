@@ -22,16 +22,58 @@ router.get(
         return res.status(404).send("Object type not found");
       }
 
-      if (!authorizeCrud("read", objectType, objectType.fields[0], req.user)) {
-        return res.status(403).json({
-          message: "You do not have permission to use this endpoint",
-        });
+      let filter = {};
+
+      var keys = [];
+      for (var key in req.query) {
+        keys.push(key);
       }
 
-      // console.log(res.paginatedResults);
+      if (keys.length > 5) {
+        let isDataFilter = true;
+        for (const key of keys) {
+          if (
+            key !== "objectType" &&
+            key !== "page" &&
+            key !== "limit" &&
+            isDataFilter
+          ) {
+            if (key === "metaDataFilter") {
+              isDataFilter = false;
+            } else if (key !== "dataFilter") {
+              //is data Filter
+              filter["data." + key] = req.query[key];
+            }
+          } else if (
+            key !== "objectType" &&
+            key !== "page" &&
+            key !== "limit"
+          ) {
+            // is metaDataFilter
+            filter["metaData." + key] = req.query[key];
+          }
+        }
+      }
 
-      const objects = await Object.find({ objectType: objectType._id });
-      return res.status(200).json(objects);
+      console.log(filter);
+
+      const objects = await Object.find({
+        objectType: objectType._id,
+        ...filter,
+      });
+
+      const returnableObjects = objects.filter((object) =>
+        authorizeCrud(
+          "read",
+          objectType,
+          objectType.fields[0],
+          req.user,
+          object
+        )
+      );
+
+      // console.log(res.paginatedResults);
+      return res.status(200).json(returnableObjects);
     }
   }
 );
